@@ -1,12 +1,12 @@
 const characters = [
- {id:"caliptus",name:"Caliptus",title:"O herói do Reino",element:"Ordem",role:"Guerreiro",hp:300,atk:50,def:25,passive:"Last Breath",basic:"Corte rápido",charged:"Lâmina do Amanhecer",skill:"Bola de Fogo",sprite:"cavaleiro.png",lore:"Um herói cujo objetivo já foi cumprido, e agora luta não pelo reino, mas pelo simples anseio por uma luta."},
+ {id:"caliptus",name:"Caliptus",title:"O herói do Reino",element:"Ordem",role:"Guerreiro",hp:300,atk:50,def:25,passive:"Last Flame",basic:"Corte rápido",charged:"Lâmina do Amanhecer",skill:"Bola de Fogo",sprite:"cavaleiro.png",lore:"Um herói cujo objetivo já foi cumprido, e agora luta não pelo reino, mas pelo simples anseio por uma luta."},
  {id:"gwen",name:"Gwen",title:"Caçadora de Heróis",element:"Caos",role:"Especialista",hp:250,atk:75,def:20,passive:"Preparado",basic:"Corte Rápido",charged:"Lâmina da Noite",skill:"Passos de Vento",sprite:"Ladina.png",lore:"Uma mercenária que usa agilidade e força para superar seus adversários antes que possam tocá-la."},
  {id:"zuan",name:"Zuan",title:"Deus da Espada",element:"Karma",role:"Guerreiro",hp:300,atk:60,def:20,passive:"Built Different",basic:"Corte da Rocha",charged:"Lâmina de Obsidiana",skill:"Lanças de Mercúrio",sprite:"Ronnin.png",lore:"Um antigo samurai que quase nunca parece se mover. Quando o faz, sua espada fala por ele."},
  {id:"kaite",name:"Kaite",title:"Arqueira Élfica",element:"Ordem",role:"Especialista / Maga",hp:250,atk:70,def:25,passive:"Gluttony",basic:"Disparo Rápido",charged:"Flecha Arcana",skill:"Chuva de Flechas",sprite:"Arqueira.png",lore:"Uma arqueira élfica cuja afinidade com a mana torna cada flecha uma ameaça."},
  {id:"golem",name:"Golem",title:"A Fúria das Trevas",element:"Caos",role:"Guerreiro",hp:500,atk:100,def:0,passive:"Built Different",basic:"Corte Negro",charged:"Pisão",skill:"Terremoto",sprite:"Golem.png",lore:"Um golem criado por necromancia a partir de inúmeras almas de guerreiros."},
  {id:"kaiser",name:"Kaiser",title:"Imperador Demoníaco",element:"Caos",role:"Mago",hp:350,atk:20,def:45,passive:"Gluttony",basic:"Soco Arcano",charged:"Explosão Mágica",skill:"Voar",sprite:"demonio.png",lore:"Um demônio que domina as trevas e utiliza magia negra para subjugar seus oponentes."},
  {id:"craylus",name:"Craylus",title:"O Mago de Todos os Magos",element:"Ordem",role:"Mago",hp:250,atk:80,def:15,passive:"Preparado",basic:"Disparo Etéreo",charged:"Lanças de Odin",skill:"Carregar Mana",sprite:"mago.png",lore:"Um mago cuja sabedoria e força arcana excedem todos os limites do reino."},
- {id:"mark",name:"Mark",title:"Lutador de Aço",element:"Karma",role:"Guerreiro",hp:300,atk:50,def:30,passive:"Last Breath",basic:"Strike",charged:"Punho do Dragão",skill:"Uppercut",sprite:"Fighter.png",lore:"Um lutador especializado em combates rápidos, que viveu para conquistar o maior torneio."},
+ {id:"mark",name:"Mark",title:"Lutador de Aço",element:"Karma",role:"Guerreiro",hp:300,atk:50,def:30,passive:"Last Flame",basic:"Strike",charged:"Punho do Dragão",skill:"Uppercut",sprite:"Fighter.png",lore:"Um lutador especializado em combates rápidos, que viveu para conquistar o maior torneio."},
  {id:"opineu",name:"Opineu",title:"Mestre dos Anões",element:"Karma",role:"Guerreiro",hp:350,atk:45,def:40,passive:"Preparado",basic:"Golpe de Machado",charged:"Martelo de Magma",skill:"Mestre da Forja",sprite:"Opineu.png",lore:"Um anão poderoso que deixou a forja para usar suas invenções na arena."}
 ];
 const equipment = [
@@ -21,13 +21,13 @@ const consumables = [
  {id:"mask",name:"Máscara do Abismo",desc:"Um artefato instável das profundezas.",base:"-50 HP e +10% de dano",order:"-25 HP e +10% de dano",chaos:"+75 HP e +5% de dano",karma:"+20% de dano"}
 ];
 const enemies = [
- {name:"Esqueleto Errante",subtitle:"Guardião das raízes",sprite:"esqueleto.png",element:"Caos",hp:190,atk:28,def:8,threat:"BAIXA"},
+ {name:"Esqueleto Errante",subtitle:"Guardião das raízes",sprite:"esqueleto.png",element:"Caos",hp:300,atk:34,def:14,threat:"BAIXA"},
  {name:"Golem das Ruínas",subtitle:"Colosso desperto",sprite:"Golem.png",element:"Caos",hp:330,atk:38,def:14,threat:"MÉDIA"},
  {name:"Mago Corrompido",subtitle:"Eco da magia antiga",sprite:"mago.png",element:"Caos",hp:390,atk:42,def:18,threat:"ALTA"},
  {name:"Kaiser, o Imperador",subtitle:"Senhor das trevas",sprite:"demonio.png",element:"Caos",hp:520,atk:48,def:24,threat:"EXTREMA"},
  {name:"Rei Demônio",subtitle:"O último trono da masmorra",sprite:"Golem.png",element:"Caos",hp:780,atk:58,def:28,threat:"LENDÁRIA"}
 ];
-const state={hero:null,gear:null,item:null,heroHp:0,heroPe:8,heroShield:0,enemy:null,enemyHp:0,enemyShield:0,turn:1,floor:0,itemUsed:false,gameOver:false,damageBonus:0,defenseBonus:0,poison:0,burn:0,enemyDefenseDown:0,lastFlame:false,turns:0};
+const state={hero:null,gear:null,item:null,heroHp:0,heroPe:8,heroShield:0,enemy:null,enemyHp:0,enemyShield:0,turn:1,floor:0,itemUsed:false,gameOver:false,damageBonus:0,defenseBonus:0,poison:0,poisonPercent:.01,burn:0,enemyDefenseDown:0,enemyDefenseDownTurns:0,lastFlame:false,turns:0,regenTurns:0,regenAmount:0};
 const $=id=>document.getElementById(id);
 function showScreen(name){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$("screen-"+name).classList.add("active");window.scrollTo(0,0)}
 function elementClass(e){return "element-"+e.toLowerCase()}
@@ -54,8 +54,8 @@ function addLog(text,enemy=false){const p=document.createElement("p");p.classNam
 function toast(text){$("toast").textContent=text;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),1900)}
 function clamp(n,min,max){return Math.max(min,Math.min(max,n))}
 function advantage(attacker,defender){const cycle={Ordem:"Caos",Caos:"Karma",Karma:"Ordem"};return cycle[attacker]===defender?1.15:cycle[defender]===attacker?.9:1}
-function startBattle(floor=0){
- state.floor=floor;state.turn=1;state.heroHp=state.hero.hp;state.heroPe=8;state.heroShield=0;state.enemyShield=0;state.itemUsed=false;state.gameOver=false;state.damageBonus=0;state.defenseBonus=0;state.poison=0;state.burn=0;state.enemyDefenseDown=0;state.lastFlame=false;state.turns=0;
+function startBattle(floor=0,enemyMultiplier=1){
+ state.floor=floor;state.turn=1;state.heroHp=state.hero.hp;state.heroPe=8;state.heroShield=0;state.enemyShield=0;state.itemUsed=false;state.gameOver=false;state.damageBonus=0;state.defenseBonus=0;state.poison=0;state.poisonPercent=.01;state.burn=0;state.enemyDefenseDown=0;state.enemyDefenseDownTurns=0;state.lastFlame=false;state.turns=0;state.regenTurns=0;state.regenAmount=0;
  const base=enemies[floor];const scale=1+Math.max(0,floor-1)*.12;
  state.enemy={...base,hp:Math.round(base.hp*scale),atk:Math.round(base.atk*scale),def:Math.round(base.def*scale)};
  state.enemyHp=state.enemy.hp;$("battle-log").innerHTML="";addLog(`Você entrou na arena. <strong>${state.enemy.name}</strong> bloqueia seu caminho.`);$("battle-item-name").textContent=state.item.name.toUpperCase();showScreen("battle");renderBattle(); 
@@ -63,7 +63,7 @@ function startBattle(floor=0){
 function getStats(){
  const h=state.hero;let atk=h.atk,def=h.def;
  if(h.passive==="Built Different"&&state.heroHp<h.hp*.5){if(h.element==="Caos")atk*=1.1;else def*=h.element==="Ordem"?1.2:1.1;if(h.element==="Karma")atk*=1.05}
- if(h.passive==="Preparado"&&state.heroHp>h.hp*.8){if(h.element==="Ordem")atk*=1.2;if(h.element==="Caos")def*=1.5}
+ if(h.passive==="Preparado"&&state.heroHp>80){if(h.element==="Ordem")atk*=1.2;if(h.element==="Caos")def*=1.5}
  if(h.passive==="Gluttony"&&state.itemUsed){if(h.element==="Ordem")def*=1.1;if(h.element==="Caos")atk*=1.1;if(h.element==="Karma"){atk*=1.05;def*=1.05}}
  atk*=1+state.damageBonus;def*=1+state.defenseBonus;
  return {atk,def};
@@ -71,12 +71,24 @@ function getStats(){
 function renderBattle(){
  const h=state.hero,e=state.enemy,st=getStats();
  $("stage-label").textContent=`MASMORRA · ANDAR ${state.floor+1} / ${enemies.length}`;$("enemy-title").textContent=e.name;$("turn-number").textContent=state.turn;
- $("hero-image").src=heroImage(h);$("hero-name").textContent=h.name;$("hero-class").textContent=h.role;$("hero-element").textContent=h.element.toUpperCase();$("hero-hp-text").textContent=`${Math.ceil(state.heroHp)} / ${h.hp}`;$("hero-hp-bar").style.width=`${clamp(state.heroHp/h.hp*100,0,100)}%`;$("hero-pe-text").textContent=`${state.heroPe} / 10`;$("hero-pe-bar").style.width=`${clamp(state.heroPe/10*100,0,100)}%`;$("hero-atk").textContent=Math.round(st.atk);$("hero-def").textContent=Math.round(st.def);$("hero-passive").textContent=h.passive;
+ $("hero-image").src=heroImage(h);$("hero-name").textContent=h.name;$("hero-class").textContent=h.role;$("hero-element").textContent=h.element.toUpperCase();$("hero-hp-text").textContent=`${Math.ceil(state.heroHp)} / ${h.hp}`;$("hero-hp-bar").style.width=`${clamp(state.heroHp/h.hp*100,0,100)}%`;$("hero-pe-text").textContent=`${state.heroPe} / 10 ${state.gear.id==="staff"?"MANA":"PE"}`;$("hero-pe-bar").style.width=`${clamp(state.heroPe/10*100,0,100)}%`;$("hero-atk").textContent=Math.round(st.atk);$("hero-def").textContent=Math.round(st.def);$("hero-passive").textContent=h.passive;
  $("enemy-image").src="assets/"+e.sprite;$("enemy-name").textContent=e.name;$("enemy-class").textContent=e.subtitle;$("enemy-element").textContent=e.element.toUpperCase();$("enemy-hp-text").textContent=`${Math.ceil(state.enemyHp)} / ${e.hp}`;$("enemy-hp-bar").style.width=`${clamp(state.enemyHp/e.hp*100,0,100)}%`;$("enemy-threat").textContent=e.threat;$("enemy-threat-bar").style.width=`${Math.min(100,25+state.floor*18)}%`;$("enemy-atk").textContent=e.atk;$("enemy-def").textContent=e.def-Math.round(state.enemyDefenseDown);$("enemy-floor").textContent=String(state.floor+1).padStart(2,"0");
- const actions=[{key:"basic",name:h.basic,desc:"Ataque simples · recupera 1 PE",cost:0},{key:"charged",name:h.charged,desc:"Golpe reforçado",cost:3},{key:"skill",name:h.skill,desc:"Habilidade especial",cost:5}];
- $("action-grid").innerHTML=actions.map(a=>`<button class="action-btn" data-action="${a.key}" ${state.heroPe<a.cost?"disabled":""}><strong>${a.name}</strong><small>${a.desc}</small><small class="cost">${a.cost?`CUSTO ${a.cost} PE`:"SEM CUSTO"}</small></button>`).join("");
+ const resource=state.gear.id==="staff"?"MANA":"PE";
+ const actions=[{key:"basic",name:h.basic,desc:"Ataque básico",cost:0},{key:"charged",name:h.charged,desc:"Ataque carregado",cost:3},{key:"skill",name:h.skill,desc:"Habilidade especial",cost:h.passive==="Preparado"&&h.element==="Karma"?4:5}];
+ const innate=weaponInnateInfo();
+ if(innate) actions.push({key:"innate",name:innate.name,desc:innate.desc,cost:innate.cost,resource:innate.resource||resource});
+ $("action-grid").innerHTML=actions.map(a=>`<button class="action-btn" data-action="${a.key}" ${state.heroPe<a.cost?"disabled":""}><strong>${a.name}</strong><small>${a.desc}</small><small class="cost">${a.cost?`CUSTO ${a.cost} ${a.resource||resource}`:"SEM CUSTO"}</small></button>`).join("");
  document.querySelectorAll(".action-btn").forEach(b=>b.addEventListener("click",()=>playerAction(b.dataset.action)));
  $("ultimate-btn").disabled=state.heroPe<1;$("item-btn").disabled=state.itemUsed||state.gameOver;$("item-btn").innerHTML=state.itemUsed?"✓ ITEM UTILIZADO":`✚ USAR <span>${state.item.name.toUpperCase()}</span><small>Uso único nesta batalha</small>`;
+}
+function weaponInnateInfo(){
+ const e=state.hero.element, g=state.gear.id;
+ if(g==="staff"&&e==="Ordem")return {name:"Cura Arcana",desc:"Recupera 10% da vida máxima",cost:3,resource:"MANA"};
+ if(g==="staff"&&e==="Karma")return {name:"Regeneração Arcana",desc:"Regenera vida por 5 turnos",cost:4,resource:"MANA"};
+ if(g==="bow"&&e==="Ordem")return {name:"Flecha Flamejante",desc:"100% de dano + queimadura por 3 turnos",cost:5};
+ if(g==="bow"&&e==="Caos")return {name:"Flecha Sombria",desc:"50% de dano e -10 DEF por 3 turnos",cost:5};
+ if(g==="bow"&&e==="Karma")return {name:"Flecha da Justiça",desc:"Dano baseado na vida restante do usuário",cost:5};
+ return null;
 }
 function spend(cost){if(state.heroPe<cost){toast("Energia insuficiente!");return false}state.heroPe-=cost;return true}
 function damageEnemy(amount,label,opts={}){
@@ -85,6 +97,9 @@ function damageEnemy(amount,label,opts={}){
  const absorbed=Math.min(state.enemyShield,damage);state.enemyShield-=absorbed;damage-=absorbed;
  state.enemyHp=Math.max(0,state.enemyHp-damage);
  addLog(`<strong>${label}</strong> causou ${damage} de dano${absorbed?` (${absorbed} absorvido pelo escudo)`:""}.`);
+ if(opts.skill&&state.gear.id==="staff"&&state.hero.element==="Caos"){
+  const stolen=Math.max(1,Math.round(damage*.10));state.heroHp=clamp(state.heroHp+stolen,0,state.hero.hp);addLog(`O cajado roubou ${stolen} HP (10% do dano da habilidade).`);
+ }
  return damage;
 }
 function playerAction(action){
@@ -93,45 +108,59 @@ function playerAction(action){
   let crit=state.gear.id==="bow"&&Math.random()<.2;damageEnemy(base, h.basic,{crit});
   state.heroPe=clamp(state.heroPe+(state.gear.id==="light"&&h.element==="Ordem"?2:1),0,10);
   if(state.gear.id==="heavy"&&Math.random()<.05){state.enemyDefenseDown+=0;addLog("A arma pesada abriu uma brecha na guarda inimiga.")}
-  if(state.gear.id==="light"&&h.element==="Caos"){state.poison=3;addLog("O inimigo foi envenenado por 3 turnos.")}
-  if(state.gear.id==="heavy"&&h.element==="Karma"){state.heroShield+=25;addLog("A postura pesada concedeu 25 de escudo.")}
+  if(state.gear.id==="light"&&h.element==="Caos"){state.poison=3;state.poisonPercent=.01;addLog("O inimigo foi envenenado por 3 turnos (1% da vida máxima por turno).") }
+
  }else if(action==="charged"){
   if(!spend(3))return;let amount=base*2;
   if(state.gear.id==="heavy"&&h.element==="Ordem")amount*=1.2;
   damageEnemy(amount,h.charged);
-  if(state.gear.id==="heavy"&&h.element==="Karma"){state.heroShield+=50;addLog("O golpe pesado concedeu 50 de escudo.")}
-  if(state.gear.id==="heavy"&&h.element==="Caos"){state.poison=3;addLog("O inimigo foi envenenado por 3 turnos.")}
+  if(state.gear.id==="heavy"&&h.element==="Karma"){state.heroShield+=50;addLog("O ataque pesado concedeu 50 de escudo.")}
+  if(state.gear.id==="heavy"&&h.element==="Caos"){state.poison=3;state.poisonPercent=.02;addLog("O inimigo foi envenenado por 3 turnos (2% da vida máxima por turno).")}
+  if(state.gear.id==="light"&&h.element==="Ordem"){state.heroPe=clamp(state.heroPe+1,0,10);addLog("A arma leve recuperou 1 PE.")}
+ }else if(action==="innate"){
+  const innate=weaponInnateInfo();if(!innate||!spend(innate.cost))return;
+  if(state.gear.id==="staff"&&h.element==="Ordem"){
+   const healed=Math.round(h.hp*.10);state.heroHp=clamp(state.heroHp+healed,0,h.hp);addLog(`<strong>${innate.name}</strong> recuperou ${healed} HP.`);
+  }else if(state.gear.id==="staff"&&h.element==="Karma"){
+   state.regenTurns=5;state.regenAmount=Math.max(1,Math.round(h.hp*.05));addLog(`<strong>${innate.name}</strong> ativa regeneração de 5% da vida máxima por 5 turnos.`);
+  }else if(state.gear.id==="bow"&&h.element==="Ordem"){
+   damageEnemy(st.atk,h.skill,{ignoreWeaponMultiplier:true});state.burn=3;addLog("A queimadura ficará ativa por 3 turnos.");
+  }else if(state.gear.id==="bow"&&h.element==="Caos"){
+   damageEnemy(st.atk*.5,innate.name,{ignoreWeaponMultiplier:true});state.enemyDefenseDown+=10;state.enemyDefenseDownTurns=3;addLog("A defesa inimiga foi reduzida em 10 pontos por 3 turnos.");
+  }else if(state.gear.id==="bow"&&h.element==="Karma"){
+   const justiceDamage=Math.max(1,state.heroHp);damageEnemy(justiceDamage,innate.name,{ignoreWeaponMultiplier:true});
+  }
  }else if(action==="skill"){
   const cost=h.passive==="Preparado"&&h.element==="Karma"?4:5;if(!spend(cost))return;
   if(h.id==="caliptus"){const dmg=Math.round(st.atk*2);state.enemyHp=Math.max(0,state.enemyHp-dmg);addLog(`<strong>${h.skill}</strong> atravessou a defesa e causou ${dmg} de dano.`)}
   else if(h.id==="gwen"){state.defenseBonus+=.25;addLog(`<strong>${h.skill}</strong> aumentou sua defesa em 25% por 2 turnos.`)}
-  else if(h.id==="zuan"){damageEnemy(st.atk*1.8,h.skill);state.enemyDefenseDown+=10;addLog("A defesa inimiga caiu em 10 pontos por 3 turnos.")}
-  else if(h.id==="kaite"){damageEnemy(st.atk*1.65,h.skill);addLog("Uma chuva de flechas atingiu o oponente.")}
-  else if(h.id==="golem"){damageEnemy(st.atk*1.5,h.skill);state.enemyDefenseDown+=12;addLog("O terremoto desestabilizou o oponente: defesa reduzida.")}
-  else if(h.id==="kaiser"){state.defenseBonus+=.2;damageEnemy(st.atk*1.5,h.skill);addLog("Kaiser paira acima do campo e fortalece sua guarda.")}
+  else if(h.id==="zuan"){damageEnemy(st.atk*1.8,h.skill,{skill:true});state.enemyDefenseDown+=10;state.enemyDefenseDownTurns=3;addLog("A defesa inimiga caiu em 10 pontos por 3 turnos.")}
+  else if(h.id==="kaite"){damageEnemy(st.atk*1.65,h.skill,{skill:true});addLog("Uma chuva de flechas atingiu o oponente.")}
+  else if(h.id==="golem"){damageEnemy(st.atk*1.5,h.skill,{skill:true});state.enemyDefenseDown+=12;state.enemyDefenseDownTurns=3;addLog("O terremoto desestabilizou o oponente: defesa reduzida por 3 turnos.")}
+  else if(h.id==="kaiser"){state.defenseBonus+=.2;damageEnemy(st.atk*1.5,h.skill,{skill:true});addLog("Kaiser paira acima do campo e fortalece sua guarda.")}
   else if(h.id==="craylus"){state.heroPe=clamp(state.heroPe+4,0,10);addLog(`<strong>${h.skill}</strong> recuperou 4 PE.`)}
-  else if(h.id==="mark"){damageEnemy(st.atk*1.9,h.skill);state.enemyDefenseDown+=5}
+  else if(h.id==="mark"){damageEnemy(st.atk*1.9,h.skill,{skill:true});state.enemyDefenseDown+=5;state.enemyDefenseDownTurns=3}
   else if(h.id==="opineu"){state.damageBonus+=.3;addLog(`<strong>${h.skill}</strong> criou um amuleto: +30% ATK por 2 turnos.`)}
  }else return;
  if(state.enemyHp<=0){finishBattle(true);return}
- enemyTurn();state.turn++;state.turns++;tickEffects();if(state.enemyHp<=0){finishBattle(true);return}if(state.heroHp<=0){if(h.passive==="Last Breath"&&!state.lastFlame){state.heroHp=1;state.lastFlame=true;addLog("✦ <strong>Last Breath!</strong> Você resistiu com 1 HP.",false)}else{finishBattle(false);return}}
+ enemyTurn();state.turn++;state.turns++;tickEffects();if(state.enemyHp<=0){finishBattle(true);return}if(state.heroHp<=0){if(h.passive==="Last Flame"&&!state.lastFlame){state.heroHp=1;state.lastFlame=true;addLog("✦ <strong>Last Flame!</strong> Você resistiu com 1 HP.",false)}else{finishBattle(false);return}}
  renderBattle();
 }
 function useItem(){
  if(state.itemUsed||state.gameOver)return;const h=state.hero,i=state.item;state.itemUsed=true;
- if(i.id==="meat"){state.heroHp=clamp(state.heroHp+40+(h.element==="Ordem"?10:h.element==="Karma"?5:0),0,h.hp);if(h.element==="Caos"){state.heroHp=Math.max(1,state.heroHp-20);state.damageBonus+=.1}}
+ if(i.id==="meat"){state.heroHp=clamp(state.heroHp+40+(h.element==="Ordem"?10:h.element==="Karma"?5:0),0,h.hp);if(h.element==="Caos"){state.heroHp=Math.max(1,state.heroHp-20);state.damageBonus+=.05}if(h.element==="Karma"){state.damageBonus+=.05}}
  if(i.id==="water"){state.heroHp=clamp(state.heroHp+15+(h.element==="Karma"?15:0),0,h.hp);if(h.element==="Ordem")state.heroShield+=50;if(h.element==="Karma")state.heroShield+=25;if(h.element==="Caos"){state.heroHp=Math.max(1,state.heroHp-55);state.damageBonus+=.2}}
  if(i.id==="mask"){state.heroHp=Math.max(1,state.heroHp-50+(h.element==="Ordem"?25:h.element==="Caos"?75:0));state.damageBonus+=h.element==="Caos"?.05:h.element==="Karma"?.2:.1}
  if(h.passive==="Gluttony"){if(h.element==="Ordem")state.defenseBonus+=.1;if(h.element==="Caos")state.damageBonus+=.1;if(h.element==="Karma"){state.damageBonus+=.05;state.defenseBonus+=.05}}
- addLog(`Você consumiu <strong>${i.name}</strong>. ${i.desc}`);enemyTurn();state.turn++;state.turns++;tickEffects();if(state.enemyHp<=0){finishBattle(true);return}if(state.heroHp<=0){if(h.passive==="Last Breath"&&!state.lastFlame){state.heroHp=1;state.lastFlame=true;addLog("✦ <strong>Last Breath!</strong> Você resistiu com 1 HP.")}else{finishBattle(false);return}}renderBattle();
+ addLog(`Você consumiu <strong>${i.name}</strong>. ${i.desc}`);enemyTurn();state.turn++;state.turns++;tickEffects();if(state.enemyHp<=0){finishBattle(true);return}if(state.heroHp<=0){if(h.passive==="Last Flame"&&!state.lastFlame){state.heroHp=1;state.lastFlame=true;addLog("✦ <strong>Last Flame!</strong> Você resistiu com 1 HP.")}else{finishBattle(false);return}}renderBattle();
 }
 function useUltimate(){
  if(state.heroPe<1||state.gameOver)return;const h=state.hero,st=getStats(),pe=state.heroPe;state.heroPe=0;
  let damage=st.atk*pe*.75;
  if(state.gear.id==="bow"&&h.element==="Karma")damage=Math.max(damage,h.hp-state.heroHp);
  damageEnemy(damage,"Ultimate · "+h.name);
- addLog(`<strong>Ultimate liberada!</strong> Toda a energia foi consumida (${pe} PE).`);
- if(state.enemyHp<=0){finishBattle(true);return}enemyTurn();state.turn++;state.turns++;tickEffects();if(state.enemyHp<=0){finishBattle(true);return}if(state.heroHp<=0){if(h.passive==="Last Breath"&&!state.lastFlame){state.heroHp=1;state.lastFlame=true;addLog("✦ <strong>Last Breath!</strong> Você resistiu com 1 HP.")}else{finishBattle(false);return}}renderBattle();
+ addLog(`<strong>Ultimate liberada!</strong> Toda a energia foi consumida (${pe} ${state.gear.id==="staff"?"MANA":"PE"}).`);
+ if(state.enemyHp<=0){finishBattle(true);return}enemyTurn();state.turn++;state.turns++;tickEffects();if(state.enemyHp<=0){finishBattle(true);return}if(state.heroHp<=0){if(h.passive==="Last Flame"&&!state.lastFlame){state.heroHp=1;state.lastFlame=true;addLog("✦ <strong>Last Flame!</strong> Você resistiu com 1 HP.")}else{finishBattle(false);return}}renderBattle();
 }
 function enemyTurn(){
  if(state.enemyHp<=0)return;const e=state.enemy,roll=Math.random();const st=getStats();let amount,label;
@@ -145,15 +174,16 @@ function enemyTurn(){
  state.heroHp-=amount;addLog(`O inimigo ${label} e causou ${amount} de dano${absorbed?` (${absorbed} absorvido pelo escudo)`:""}.`,true);
 }
 function tickEffects(){
- if(state.poison>0){const d=Math.max(1,Math.round(state.enemy.hp*.01));state.enemyHp=Math.max(0,state.enemyHp-d);state.poison--;addLog(`O veneno causou ${d} de dano.`,true)}
+ if(state.poison>0){const d=Math.max(1,Math.round(state.enemy.hp*(state.poisonPercent||.01)));state.enemyHp=Math.max(0,state.enemyHp-d);state.poison--;addLog(`O veneno causou ${d} de dano.`,true)}
  if(state.burn>0){const d=Math.max(1,Math.round(state.enemy.hp*.03));state.enemyHp=Math.max(0,state.enemyHp-d);state.burn--;addLog(`A queimadura causou ${d} de dano.`,true)}
- if(state.enemyDefenseDown>0)state.enemyDefenseDown=Math.max(0,state.enemyDefenseDown-1);
+ if(state.regenTurns>0){if(state.regenAmount>0){state.heroHp=clamp(state.heroHp+state.regenAmount,0,state.hero.hp);addLog(`A regeneração recuperou ${state.regenAmount} HP.`);}state.regenTurns--;}
+ if(state.enemyDefenseDownTurns>0){state.enemyDefenseDownTurns--;if(state.enemyDefenseDownTurns===0)state.enemyDefenseDown=0;}
  if(state.damageBonus>0)state.damageBonus=Math.max(0,state.damageBonus-.025);
  if(state.defenseBonus>0)state.defenseBonus=Math.max(0,state.defenseBonus-.025);
 }
 function finishBattle(won){
  state.gameOver=true;
- if(won){const final=state.floor===enemies.length-1;$("result-symbol").textContent=final?"♛":"✦";$("result-eyebrow").textContent=final?"O REINO ESTÁ SALVO":"VITÓRIA";$("result-title").textContent=final?"O Rei Demônio foi derrotado.":"O caminho continua."; $("result-copy").textContent=final?"Caliptus cumpriu seu destino. A masmorra silenciou e o reino está livre das trevas.":"Você superou "+state.enemy.name+". Prepare-se: a masmorra guarda um desafio ainda maior."; $("next-battle-btn").style.display=final?"none":"inline-block";$("next-battle-btn").innerHTML="PRÓXIMO DESAFIO <span>→</span>";}
+ if(won){if(state.floor===0&&!state.skeletonRematchDone)state.skeletonRematchAvailable=true;const final=state.floor===enemies.length-1;$("result-symbol").textContent=final?"♛":"✦";$("result-eyebrow").textContent=final?"O REINO ESTÁ SALVO":"VITÓRIA";$("result-title").textContent=final?"O Rei Demônio foi derrotado.":"O caminho continua."; $("result-copy").textContent=final?"Caliptus cumpriu seu destino. A masmorra silenciou e o reino está livre das trevas.":(state.floor===0&&state.skeletonRematchAvailable?"O Esqueleto Errante voltou mais forte. Prepare-se para enfrentá-lo novamente!":"Você superou "+state.enemy.name+". Prepare-se: a masmorra guarda um desafio ainda maior."); $("next-battle-btn").style.display=final?"none":"inline-block";$("next-battle-btn").innerHTML="PRÓXIMO DESAFIO <span>→</span>";}
  else{$("result-symbol").textContent="☽";$("result-eyebrow").textContent="DERROTA";$("result-title").textContent="A masmorra venceu desta vez."; $("result-copy").textContent="Seu campeão caiu diante de "+state.enemy.name+". Reorganize sua estratégia e tente novamente."; $("next-battle-btn").style.display="inline-block";$("next-battle-btn").textContent="TENTAR NOVAMENTE";}
  $("result-stats").innerHTML=`<div class="result-stat"><strong>${state.turns+1}</strong><span>TURNOS</span></div><div class="result-stat"><strong>${Math.max(0,Math.ceil(state.heroHp))}</strong><span>HP RESTANTE</span></div><div class="result-stat"><strong>${state.floor+1}</strong><span>ANDAR</span></div>`;
  showScreen("result");
@@ -164,6 +194,6 @@ $("back-select-btn").addEventListener("click",()=>showScreen("select"));
 $("begin-battle-btn").addEventListener("click",()=>{if(!state.gear||!state.item){toast("Escolha equipamento e consumível.");return}startBattle(0)});
 $("item-btn").addEventListener("click",useItem);
 $("ultimate-btn").addEventListener("click",useUltimate);
-$("next-battle-btn").addEventListener("click",()=>{if(state.gameOver&&state.heroHp>0&&state.floor<enemies.length-1)startBattle(state.floor+1);else startBattle(state.floor)});
+$("next-battle-btn").addEventListener("click",()=>{if(state.gameOver&&state.heroHp>0){if(state.skeletonRematchAvailable){state.skeletonRematchAvailable=false;state.skeletonRematchDone=true;startBattle(0,1.5)}else if(state.floor<enemies.length-1){startBattle(state.floor+1)}else{startBattle(state.floor)}}else{startBattle(state.floor)}});
 $("result-menu-btn").addEventListener("click",()=>{state.hero=null;state.gear=null;state.item=null;renderCharacters();$("to-loadout-btn").disabled=true;$("selected-summary").textContent="Selecione um personagem para continuar." ;showScreen("title")});
 $("quit-btn").addEventListener("click",()=>{if(confirm("Deseja abandonar a jornada atual? Seu progresso nesta partida será perdido.")){state.hero=null;showScreen("title")}});
