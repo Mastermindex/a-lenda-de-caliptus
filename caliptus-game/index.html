@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#10101d">
+  <meta name="description" content="A Lenda de Caliptus — RPG de batalha por turnos.">
+  <title>A Lenda de Caliptus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <main id="app">
+    <section id="screen-title" class="screen title-screen active">
+      <div class="title-mark">✦</div>
+      <p class="eyebrow">UMA JORNADA ENTRE ORDEM, CAOS E KARMA</p>
+      <h1>A LENDA DE<br><span>CALIPTUS</span></h1>
+      <p class="intro">Um herói invocado. Um reino em perigo.<br>Uma masmorra que não perdoa.</p>
+      <button class="primary-btn" id="start-btn">INICIAR JORNADA <span>→</span></button>
+      <div class="title-footer">RPG DE TURNOS <i></i> EDIÇÃO DO REINO</div>
+    </section>
+
+    <section id="screen-select" class="screen">
+      <header class="section-head">
+        <div><p class="eyebrow">PRIMEIRO PASSO</p><h2>Escolha seu campeão</h2><p class="muted">Nove guerreiros. Nove destinos. Escolha com sabedoria.</p></div>
+        <div class="step">01 <span>/ 03</span></div>
+      </header>
+      <div id="character-grid" class="character-grid"></div>
+      <div class="selection-bottom">
+        <div id="selected-summary" class="selected-summary">Selecione um personagem para continuar.</div>
+        <button class="primary-btn" id="to-loadout-btn" disabled>CONTINUAR <span>→</span></button>
+      </div>
+    </section>
+
+    <section id="screen-loadout" class="screen">
+      <header class="section-head">
+        <div><p class="eyebrow">PREPARE-SE PARA A MASMORRA</p><h2>Monte seu equipamento</h2><p class="muted">Escolha um equipamento e um consumível antes da primeira batalha.</p></div>
+        <div class="step">02 <span>/ 03</span></div>
+      </header>
+      <div class="loadout-layout">
+        <div class="loadout-hero panel" id="loadout-hero"></div>
+        <div class="loadout-options">
+          <div class="panel">
+            <div class="panel-heading"><span class="number">A</span><div><h3>Equipamento</h3><p>O estilo de combate que define suas ações.</p></div></div>
+            <div id="equipment-options" class="option-list"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-heading"><span class="number">B</span><div><h3>Consumível</h3><p>Um item de uso único durante cada batalha.</p></div></div>
+            <div id="item-options" class="option-list"></div>
+          </div>
+        </div>
+      </div>
+      <div class="selection-bottom">
+        <button class="text-btn" id="back-select-btn">← VOLTAR</button>
+        <button class="primary-btn" id="begin-battle-btn">ENTRAR NA MASMORRA <span>→</span></button>
+      </div>
+    </section>
+
+    <section id="screen-battle" class="screen battle-screen">
+      <header class="battle-top">
+        <div class="brand-small"><span>✦</span> A LENDA DE CALIPTUS</div>
+        <div class="dungeon-label"><span class="live-dot"></span><span id="stage-label">MASMORRA · ANDAR 1</span></div>
+        <button class="text-btn" id="quit-btn">SAIR DA JORNADA</button>
+      </header>
+      <div class="battle-heading"><div><p class="eyebrow">A ARENA ESTÁ PRONTA</p><h2 id="enemy-title">O primeiro desafio</h2></div><div class="turn-counter">TURNO <strong id="turn-number">1</strong></div></div>
+      <div class="combat-arena">
+        <article class="fighter-card hero-card">
+          <div class="fighter-topline"><span class="side-label">SEU CAMPEÃO</span><span class="element-pill" id="hero-element">ORDEM</span></div>
+          <div class="fighter-portrait"><img id="hero-image" src="assets/cavaleiro.png" alt=""></div>
+          <div class="fighter-info"><h3 id="hero-name">Caliptus</h3><p id="hero-class">Guerreiro</p></div>
+          <div class="health-meta"><span>PONTOS DE VIDA</span><strong id="hero-hp-text">300 / 300</strong></div>
+          <div class="health-track"><div id="hero-hp-bar" class="health-fill hero-fill"></div></div>
+          <div class="energy-meta"><span>ENERGIA (PE)</span><strong id="hero-pe-text">8 / 10</strong></div>
+          <div class="energy-track"><div id="hero-pe-bar" class="energy-fill"></div></div>
+          <div class="stat-row"><span>ATK <b id="hero-atk">50</b></span><span>DEF <b id="hero-def">25</b></span><span>PASSIVA <b id="hero-passive">Last Breath</b></span></div>
+        </article>
+        <div class="versus-mark"><span>VS</span><i></i></div>
+        <article class="fighter-card enemy-card">
+          <div class="fighter-topline"><span class="side-label">OPONENTE</span><span class="element-pill enemy-pill" id="enemy-element">CAOS</span></div>
+          <div class="fighter-portrait enemy-portrait"><img id="enemy-image" src="assets/esqueleto.png" alt=""></div>
+          <div class="fighter-info"><h3 id="enemy-name">Esqueleto</h3><p id="enemy-class">Criatura da masmorra</p></div>
+          <div class="health-meta"><span>PONTOS DE VIDA</span><strong id="enemy-hp-text">180 / 180</strong></div>
+          <div class="health-track"><div id="enemy-hp-bar" class="health-fill enemy-fill"></div></div>
+          <div class="energy-meta"><span>AMEAÇA</span><strong id="enemy-threat">BAIXA</strong></div>
+          <div class="energy-track threat-track"><div id="enemy-threat-bar" class="energy-fill threat-fill"></div></div>
+          <div class="stat-row"><span>ATK <b id="enemy-atk">30</b></span><span>DEF <b id="enemy-def">10</b></span><span>ANDAR <b id="enemy-floor">01</b></span></div>
+        </article>
+      </div>
+      <div class="battle-lower">
+        <section class="actions-panel panel">
+          <div class="panel-title-line"><div><p class="eyebrow">SUA VEZ</p><h3>Escolha uma ação</h3></div><span class="turn-hint">A estratégia decide a batalha.</span></div>
+          <div id="action-grid" class="action-grid"></div>
+          <div class="utility-actions"><button id="ultimate-btn" class="ultimate-btn">✦ ULTIMATE <small>Consome toda a energia</small></button><button id="item-btn" class="item-btn">✚ USAR <span id="battle-item-name">CARNE SECA</span><small>Uso único nesta batalha</small></button></div>
+        </section>
+        <section class="log-panel panel">
+          <div class="log-heading"><div><p class="eyebrow">REGISTRO DA ARENA</p><h3>Crônica da batalha</h3></div><span class="log-dot"></span></div>
+          <div id="battle-log" class="battle-log"><p class="log-entry">A masmorra aguarda seu primeiro movimento...</p></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="screen-result" class="screen result-screen">
+      <div class="result-symbol" id="result-symbol">✦</div>
+      <p class="eyebrow" id="result-eyebrow">VITÓRIA</p>
+      <h2 id="result-title">O caminho continua.</h2>
+      <p id="result-copy" class="result-copy"></p>
+      <div class="result-stats panel" id="result-stats"></div>
+      <div class="result-buttons"><button class="text-btn" id="result-menu-btn">VOLTAR AO INÍCIO</button><button class="primary-btn" id="next-battle-btn">PRÓXIMO DESAFIO <span>→</span></button></div>
+    </section>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="game.js"></script>
+</body>
+</html>
