@@ -4,10 +4,10 @@ const characters = [
  {id:"zuan",name:"Zuan",title:"Deus da Espada",element:"Karma",role:"Guerreiro",hp:300,atk:60,def:20,passive:"Built Different",basic:"Corte da Rocha",charged:"Lâmina de Obsidiana",skill:"Lanças de Mercúrio",sprite:"Ronnin.png",lore:"Um antigo samurai que quase nunca parece se mover. Quando o faz, sua espada fala por ele."},
  {id:"kaite",name:"Kaite",title:"Arqueira Élfica",element:"Ordem",role:"Especialista / Maga",hp:250,atk:70,def:25,passive:"Gluttony",basic:"Disparo Rápido",charged:"Flecha Arcana",skill:"Chuva de Flechas",sprite:"Arqueira.png",lore:"Uma arqueira élfica cuja afinidade com a mana torna cada flecha uma ameaça."},
  {id:"golem",name:"Golem",title:"A Fúria das Trevas",element:"Caos",role:"Guerreiro",hp:500,atk:100,def:0,passive:"Built Different",basic:"Corte Negro",charged:"Pisão",skill:"Terremoto",sprite:"Golem.png",lore:"Um golem criado por necromancia a partir de inúmeras almas de guerreiros."},
- {id:"kaiser",name:"Kaiser",title:"Imperador Demoníaco",element:"Caos",role:"Mago",hp:350,atk:20,def:45,passive:"Gluttony",basic:"Soco Arcano",charged:"Explosão Mágica",skill:"Voar",sprite:"mago.png",lore:"Um demônio que domina as trevas e utiliza magia negra para subjugar seus oponentes."},
+ {id:"kaiser",name:"Kaiser",title:"Imperador Demoníaco",element:"Caos",role:"Mago",hp:350,atk:20,def:45,passive:"Gluttony",basic:"Soco Arcano",charged:"Explosão Mágica",skill:"Voar",sprite:"demonio.png",lore:"Um demônio que domina as trevas e utiliza magia negra para subjugar seus oponentes."},
  {id:"craylus",name:"Craylus",title:"O Mago de Todos os Magos",element:"Ordem",role:"Mago",hp:250,atk:80,def:15,passive:"Preparado",basic:"Disparo Etéreo",charged:"Lanças de Odin",skill:"Carregar Mana",sprite:"mago.png",lore:"Um mago cuja sabedoria e força arcana excedem todos os limites do reino."},
  {id:"mark",name:"Mark",title:"Lutador de Aço",element:"Karma",role:"Guerreiro",hp:300,atk:50,def:30,passive:"Last Breath",basic:"Strike",charged:"Punho do Dragão",skill:"Uppercut",sprite:"Fighter.png",lore:"Um lutador especializado em combates rápidos, que viveu para conquistar o maior torneio."},
- {id:"opineu",name:"Opineu",title:"Mestre dos Anões",element:"Karma",role:"Guerreiro",hp:350,atk:45,def:40,passive:"Preparado",basic:"Golpe de Machado",charged:"Martelo de Magma",skill:"Mestre da Forja",sprite:"An╞o.png",lore:"Um anão poderoso que deixou a forja para usar suas invenções na arena."}
+ {id:"opineu",name:"Opineu",title:"Mestre dos Anões",element:"Karma",role:"Guerreiro",hp:350,atk:45,def:40,passive:"Preparado",basic:"Golpe de Machado",charged:"Martelo de Magma",skill:"Mestre da Forja",sprite:"Opineu.png",lore:"Um anão poderoso que deixou a forja para usar suas invenções na arena."}
 ];
 const equipment = [
  {id:"light",name:"Arma leve",type:"Ataques rápidos",desc:"100% de dano. Sem chance de esquiva.",base:"Ataque rápido",order:"Ataques leves recuperam 1 PE extra.",chaos:"Ataques leves aplicam veneno por 3 turnos.",karma:"Ataques pesados concedem 25 de escudo."},
@@ -24,7 +24,7 @@ const enemies = [
  {name:"Esqueleto Errante",subtitle:"Guardião das raízes",sprite:"esqueleto.png",element:"Caos",hp:190,atk:28,def:8,threat:"BAIXA"},
  {name:"Golem das Ruínas",subtitle:"Colosso desperto",sprite:"Golem.png",element:"Caos",hp:330,atk:38,def:14,threat:"MÉDIA"},
  {name:"Mago Corrompido",subtitle:"Eco da magia antiga",sprite:"mago.png",element:"Caos",hp:390,atk:42,def:18,threat:"ALTA"},
- {name:"Kaiser, o Imperador",subtitle:"Senhor das trevas",sprite:"mago.png",element:"Caos",hp:520,atk:48,def:24,threat:"EXTREMA"},
+ {name:"Kaiser, o Imperador",subtitle:"Senhor das trevas",sprite:"demonio.png",element:"Caos",hp:520,atk:48,def:24,threat:"EXTREMA"},
  {name:"Rei Demônio",subtitle:"O último trono da masmorra",sprite:"Golem.png",element:"Caos",hp:780,atk:58,def:28,threat:"LENDÁRIA"}
 ];
 const state={hero:null,gear:null,item:null,heroHp:0,heroPe:8,heroShield:0,enemy:null,enemyHp:0,enemyShield:0,turn:1,floor:0,itemUsed:false,gameOver:false,damageBonus:0,defenseBonus:0,poison:0,burn:0,enemyDefenseDown:0,lastFlame:false,turns:0};
@@ -39,7 +39,13 @@ function renderCharacters(){
 }
 function renderLoadout(){
  const c=state.hero;$("loadout-hero").innerHTML=`<img src="${heroImage(c)}" alt="${c.name}"><div class="element-text ${elementClass(c.element)}">${c.element.toUpperCase()} · ${c.role.toUpperCase()}</div><h3>${c.name}</h3><p>${c.title}</p><div class="loadout-stats"><span>HP <b>${c.hp}</b></span><span>ATK <b>${c.atk}</b></span><span>DEF <b>${c.def}</b></span></div>`;
- $("equipment-options").innerHTML=equipment.map(e=>`<button class="option-card ${state.gear?.id===e.id?"selected":""}" data-id="${e.id}"><strong>${e.name}</strong><span>${e.desc}</span><em>${e[c.element.toLowerCase()]}</em></button>`).join("");
+ const allowed = c.role.includes("Guerreiro") ? ["light","heavy"]
+  : c.role.includes("Especialista") && c.role.includes("Maga") ? ["bow","staff"]
+  : c.role.includes("Mago") ? ["staff"]
+  : c.role.includes("Especialista") ? ["bow"] : [];
+ const availableEquipment=equipment.filter(e=>allowed.includes(e.id));
+ if(!availableEquipment.some(e=>e.id===state.gear?.id)) state.gear=availableEquipment[0]||null;
+ $("equipment-options").innerHTML=availableEquipment.map(e=>`<button class="option-card ${state.gear?.id===e.id?"selected":""}" data-id="${e.id}"><strong>${e.name}</strong><span>${e.desc}</span><em>${e[c.element.toLowerCase()]}</em></button>`).join("");
  $("item-options").innerHTML=consumables.map(i=>`<button class="option-card ${state.item?.id===i.id?"selected":""}" data-id="${i.id}"><strong>${i.name}</strong><span>${i.desc}</span><em>${i.base} · ${i[c.element.toLowerCase()]}</em></button>`).join("");
  document.querySelectorAll("#equipment-options .option-card").forEach(b=>b.addEventListener("click",()=>{state.gear=equipment.find(e=>e.id===b.dataset.id);renderLoadout()}));
  document.querySelectorAll("#item-options .option-card").forEach(b=>b.addEventListener("click",()=>{state.item=consumables.find(i=>i.id===b.dataset.id);renderLoadout()}));
@@ -153,7 +159,7 @@ function finishBattle(won){
  showScreen("result");
 }
 $("start-btn").addEventListener("click",()=>{renderCharacters();showScreen("select")});
-$("to-loadout-btn").addEventListener("click",()=>{if(!state.hero)return;state.gear=equipment[0];state.item=consumables[0];renderLoadout();showScreen("loadout")});
+$("to-loadout-btn").addEventListener("click",()=>{if(!state.hero)return;state.gear=null;state.item=consumables[0];renderLoadout();showScreen("loadout")});
 $("back-select-btn").addEventListener("click",()=>showScreen("select"));
 $("begin-battle-btn").addEventListener("click",()=>{if(!state.gear||!state.item){toast("Escolha equipamento e consumível.");return}startBattle(0)});
 $("item-btn").addEventListener("click",useItem);
