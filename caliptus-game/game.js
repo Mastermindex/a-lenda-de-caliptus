@@ -27,7 +27,7 @@ const enemies = [
  {name:"Kaiser, o Imperador",subtitle:"Senhor das trevas",sprite:"demonio.png",element:"Caos",hp:520,atk:48,def:24,threat:"EXTREMA"},
  {name:"Rei Demônio",subtitle:"O último trono da masmorra",sprite:"Golem.png",element:"Caos",hp:780,atk:58,def:28,threat:"LENDÁRIA"}
 ];
-const state={hero:null,gear:null,item:null,heroHp:0,heroPe:8,heroShield:0,enemy:null,enemyHp:0,enemyShield:0,turn:1,floor:0,itemUsed:false,gameOver:false,damageBonus:0,defenseBonus:0,poison:0,poisonPercent:.01,burn:0,enemyDefenseDown:0,enemyDefenseDownTurns:0,lastFlame:false,turns:0,regenTurns:0,regenAmount:0};
+const state={hero:null,gear:null,item:null,heroHp:0,heroPe:8,heroShield:0,enemy:null,enemyHp:0,enemyShield:0,turn:1,floor:0,itemUsed:false,gameOver:false,damageBonus:0,defenseBonus:0,poison:0,poisonPercent:.01,burn:0,enemyDefenseDown:0,enemyDefenseDownTurns:0,lastFlame:false,turns:0,regenTurns:0,regenAmount:0,skeletonRematchAvailable:false,skeletonRematchDone:false};
 const $=id=>document.getElementById(id);
 function showScreen(name){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$("screen-"+name).classList.add("active");window.scrollTo(0,0)}
 function elementClass(e){return "element-"+e.toLowerCase()}
@@ -56,7 +56,7 @@ function clamp(n,min,max){return Math.max(min,Math.min(max,n))}
 function advantage(attacker,defender){const cycle={Ordem:"Caos",Caos:"Karma",Karma:"Ordem"};return cycle[attacker]===defender?1.15:cycle[defender]===attacker?.9:1}
 function startBattle(floor=0,enemyMultiplier=1){
  state.floor=floor;state.turn=1;state.heroHp=state.hero.hp;state.heroPe=8;state.heroShield=0;state.enemyShield=0;state.itemUsed=false;state.gameOver=false;state.damageBonus=0;state.defenseBonus=0;state.poison=0;state.poisonPercent=.01;state.burn=0;state.enemyDefenseDown=0;state.enemyDefenseDownTurns=0;state.lastFlame=false;state.turns=0;state.regenTurns=0;state.regenAmount=0;
- const base=enemies[floor];const scale=1+Math.max(0,floor-1)*.12;
+ const base=enemies[floor];const scale=(1+Math.max(0,floor-1)*.12)*enemyMultiplier;
  state.enemy={...base,hp:Math.round(base.hp*scale),atk:Math.round(base.atk*scale),def:Math.round(base.def*scale)};
  state.enemyHp=state.enemy.hp;$("battle-log").innerHTML="";addLog(`Você entrou na arena. <strong>${state.enemy.name}</strong> bloqueia seu caminho.`);$("battle-item-name").textContent=state.item.name.toUpperCase();showScreen("battle");renderBattle(); 
 }
@@ -183,7 +183,11 @@ function tickEffects(){
 }
 function finishBattle(won){
  state.gameOver=true;
- if(won){if(state.floor===0&&!state.skeletonRematchDone)state.skeletonRematchAvailable=true;const final=state.floor===enemies.length-1;$("result-symbol").textContent=final?"♛":"✦";$("result-eyebrow").textContent=final?"O REINO ESTÁ SALVO":"VITÓRIA";$("result-title").textContent=final?"O Rei Demônio foi derrotado.":"O caminho continua."; $("result-copy").textContent=final?"Caliptus cumpriu seu destino. A masmorra silenciou e o reino está livre das trevas.":(state.floor===0&&state.skeletonRematchAvailable?"O Esqueleto Errante voltou mais forte. Prepare-se para enfrentá-lo novamente!":"Você superou "+state.enemy.name+". Prepare-se: a masmorra guarda um desafio ainda maior."); $("next-battle-btn").style.display=final?"none":"inline-block";$("next-battle-btn").innerHTML="PRÓXIMO DESAFIO <span>→</span>";}
+ if(won){
+  if(state.floor===0&&!state.skeletonRematchDone) state.skeletonRematchAvailable=true;
+  else if(state.floor===0&&state.skeletonRematchDone) state.skeletonRematchAvailable=false;const final=state.floor===enemies.length-1;$("result-symbol").textContent=final?"♛":"✦";$("result-eyebrow").textContent=final?"O REINO ESTÁ SALVO":"VITÓRIA";$("result-title").textContent=final?"O Rei Demônio foi derrotado.":"O caminho continua."; $("result-copy").textContent=final?"Caliptus cumpriu seu destino. A masmorra silenciou e o reino está livre das trevas.":(state.floor===0&&state.skeletonRematchAvailable?"O Esqueleto Errante voltou mais forte. Prepare-se para enfrentá-lo novamente!":"Você superou "+state.enemy.name+". Prepare-se: a masmorra guarda um desafio ainda maior."); $("next-battle-btn").style.display=final?"none":"inline-block";$("next-battle-btn").innerHTML=(state.floor===0&&state.skeletonRematchAvailable)
+  ?"ENFRENTAR O ESQUELETO NOVAMENTE <span>→</span>"
+  :"PRÓXIMO DESAFIO <span>→</span>";}
  else{$("result-symbol").textContent="☽";$("result-eyebrow").textContent="DERROTA";$("result-title").textContent="A masmorra venceu desta vez."; $("result-copy").textContent="Seu campeão caiu diante de "+state.enemy.name+". Reorganize sua estratégia e tente novamente."; $("next-battle-btn").style.display="inline-block";$("next-battle-btn").textContent="TENTAR NOVAMENTE";}
  $("result-stats").innerHTML=`<div class="result-stat"><strong>${state.turns+1}</strong><span>TURNOS</span></div><div class="result-stat"><strong>${Math.max(0,Math.ceil(state.heroHp))}</strong><span>HP RESTANTE</span></div><div class="result-stat"><strong>${state.floor+1}</strong><span>ANDAR</span></div>`;
  showScreen("result");
@@ -194,6 +198,17 @@ $("back-select-btn").addEventListener("click",()=>showScreen("select"));
 $("begin-battle-btn").addEventListener("click",()=>{if(!state.gear||!state.item){toast("Escolha equipamento e consumível.");return}startBattle(0)});
 $("item-btn").addEventListener("click",useItem);
 $("ultimate-btn").addEventListener("click",useUltimate);
-$("next-battle-btn").addEventListener("click",()=>{if(state.gameOver&&state.heroHp>0){if(state.skeletonRematchAvailable){state.skeletonRematchAvailable=false;state.skeletonRematchDone=true;startBattle(0,1.5)}else if(state.floor<enemies.length-1){startBattle(state.floor+1)}else{startBattle(state.floor)}}else{startBattle(state.floor)}});
+$("next-battle-btn").addEventListener("click",()=>{
+ if(!state.gameOver)return;
+ if(state.heroHp<=0){startBattle(state.floor);return;}
+ if(state.skeletonRematchAvailable){
+  state.skeletonRematchAvailable=false;
+  state.skeletonRematchDone=true;
+  startBattle(0,1.5);
+  return;
+ }
+ if(state.floor<enemies.length-1){startBattle(state.floor+1);return;}
+ startBattle(state.floor);
+});
 $("result-menu-btn").addEventListener("click",()=>{state.hero=null;state.gear=null;state.item=null;renderCharacters();$("to-loadout-btn").disabled=true;$("selected-summary").textContent="Selecione um personagem para continuar." ;showScreen("title")});
 $("quit-btn").addEventListener("click",()=>{if(confirm("Deseja abandonar a jornada atual? Seu progresso nesta partida será perdido.")){state.hero=null;showScreen("title")}});
